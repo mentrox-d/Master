@@ -36,7 +36,9 @@ export default function Dashboard() {
   };
 
   // Department summary
-  const departmentSummary = {};
+const departmentSummary = {};
+
+if (data && data.attendance_list) {
   data.attendance_list.forEach((item) => {
     if (!departmentSummary[item.department]) {
       departmentSummary[item.department] = { present: 0, absent: 0 };
@@ -48,6 +50,11 @@ export default function Dashboard() {
       departmentSummary[item.department].absent += 1;
     }
   });
+}
+if (!data) {
+  return <p>Loading dashboard...</p>;
+}
+  
 
   return (
     <div className="container">
@@ -121,25 +128,25 @@ export default function Dashboard() {
           </thead>
 
           <tbody>
-            {data.attendance_list.map((item, index) => (
-              <tr key={index}>
-                <td>{item.employee_name}</td>
-                <td>{item.department}</td>
-                <td>{item.date}</td>
-                <td>
-                  <span
-                    className={
-                      item.status === "Present"
-                        ? "badge badge-green"
-                        : "badge badge-red"
-                    }
-                  >
-                    {item.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {data?.attendance_list?.map((item, index) => (
+    <tr key={index}>
+      <td>{item.employee_name}</td>
+      <td>{item.department}</td>
+      <td>{item.date}</td>
+      <td>
+        <span
+          className={
+            item.status === "Present"
+              ? "badge badge-green"
+              : "badge badge-red"
+          }
+        >
+          {item.status}
+        </span>
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       </div>
     </div>
